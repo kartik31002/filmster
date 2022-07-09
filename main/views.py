@@ -66,3 +66,14 @@ def searchresults(request):
         response3[i] = requests.get(apiBaseURL + 'movie/' + str(i) + '?api_key=' + apiKey).json()
     return render(request, 'main/search.html/', {'response3' : response3, 'searchTerm':searchTerm})
 
+def genre(request,genreid):
+    
+    response = requests.get(apiBaseURL + 'genre/' + str(genreid) + '/movies?api_key=' + apiKey + '&language=en-US&include_adult=false&sort_by=created_at.asc').json()
+    popular_movies = response["results"]
+    movie_id = []
+    for i in popular_movies:
+        movie_id.append(i["id"])
+    response3 = {}
+    for i in movie_id:
+        response3[i] = requests.get(apiBaseURL + 'movie/' + str(i) + '?api_key=' + apiKey).json()
+    return render(request, 'genre.html/', {'response3' : response3})
