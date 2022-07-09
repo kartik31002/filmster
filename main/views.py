@@ -56,15 +56,26 @@ def detail(request,id):
 
 def searchresults(request):
     searchTerm = request.POST.get("searchTerm")
-    response = requests.get(apiBaseURL + 'search/movie?api_key=' + apiKey + '&language=en-US&page=1&include_adult=false&query=' + searchTerm).json()
-    popular_movies = response["results"]
-    movie_id = []
-    for i in popular_movies:
-        movie_id.append(i["id"])
-    response3 = {}
-    for i in movie_id:
-        response3[i] = requests.get(apiBaseURL + 'movie/' + str(i) + '?api_key=' + apiKey).json()
-    return render(request, 'main/search.html/', {'response3' : response3, 'searchTerm':searchTerm})
+    if(len(searchTerm)):
+        response = requests.get(apiBaseURL + 'search/movie?api_key=' + apiKey + '&language=en-US&page=1&include_adult=false&query=' + searchTerm).json()
+        popular_movies = response["results"]
+        movie_id = []
+        for i in popular_movies:
+            movie_id.append(i["id"])
+        response3 = {}
+        for i in movie_id:
+            response3[i] = requests.get(apiBaseURL + 'movie/' + str(i) + '?api_key=' + apiKey).json()
+        return render(request, 'main/search.html/', {'response3' : response3, 'searchTerm':searchTerm})
+    else:
+        response = requests.get(apiBaseURL + 'movie/now_playing?api_key=' + apiKey).json()
+        popular_movies = response["results"]
+        movie_id = []
+        for i in popular_movies:
+            movie_id.append(i["id"])
+        response3 = {}
+        for i in movie_id:
+            response3[i] = requests.get(apiBaseURL + 'movie/' + str(i) + '?api_key=' + apiKey).json()
+        return render(request, 'main/index.html', {'response3' : response3})
 
 def genre(request,genreid):
     
