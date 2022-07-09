@@ -7,5 +7,6 @@ app_name ="main"
 urlpatterns = [
     path('',views.home, name="home"), #here blank sapce in first ' ' because it is supposed to be our home page. there is nothing before to be written before the url of our home page
     path('details/<int:id>/' , views.detail, name="detail"),
+    path('genre/<int:genreid>/' , views.genre, name="genre"),
     path('search/' , views.searchresults, name="searchresults"),
 ]
